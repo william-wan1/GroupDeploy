@@ -61,8 +61,8 @@ namespace fashionUtilityApplication
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "140046484155-0bvlpia137eel59st58u5gsm8rlld5oc.apps.googleusercontent.com",
-                ClientSecret = "g24mE_6rFUccescUy7UcBw5y"
+                ClientId = System.Configuration.ConfigurationManager.AppSettings["clientId"],
+                ClientSecret = System.Configuration.ConfigurationManager.AppSettings["clientSecret"]
             });
         }
     }

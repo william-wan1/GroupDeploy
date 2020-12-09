@@ -23,16 +23,26 @@ namespace fashionUtilityApplication
 
             return query;
         }
-        public IQueryable<Product> GetProducts([QueryString("id")] int? categoryId)
+        public IQueryable<Product> GetProducts()
         {
+            int categoryID = -1;
+            if (Request.QueryString["id"] != null)
+            {
+                categoryID = Convert.ToInt32(Request.QueryString["id"]);
+            }
             var _db = new fashionUtilityApplication.Models.ProductContext();
             IQueryable<Product> query = _db.Products;
-            if (categoryId.HasValue && categoryId > 0)
+            if (categoryID != -1 && categoryID > 0)
             {
-                query = query.Where(p => p.CategoryID == categoryId && (p.GenderID == 2 || p.GenderID == 3));
+
+                Session["categoryid"] = categoryID;
+                query = query.Where(p => p.CategoryID == categoryID && (p.GenderID == 2 || p.GenderID == 3));
             }
             query = query.Where(p => p.GenderID == 2 || p.GenderID == 3);
             return query;
+
         }
+
+       
     }
 }

@@ -13,26 +13,14 @@ using Braintree;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Script.Services;
+using Stripe.Checkout;
 
 namespace fashionUtilityApplication.Checkout
 {
     [ScriptService]
     public partial class CheckoutStart : System.Web.UI.Page
     {
-       // private IBraintreeService _braintreeService;
-        private readonly CartItem cartItem;
-        private static string clients;
-
-        public string Clients { get { return clients; } }
-
-        private static IBraintreeService _braintreeService = new fashionUtilityApplication.Services.BraintreeService();
-        private readonly UserManager<ApplicationUser> _userManager;
-        
-
-
-
-        protected string client_Token { get; set; }
-
+        public static string sessionId = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             bool val1 = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
@@ -50,13 +38,14 @@ namespace fashionUtilityApplication.Checkout
             }
             else if (Session["payment_method"].ToString() == "Braintree")
             {
+                
                 Purchase();
             }
             else
             {
                 Response.Redirect("CheckoutError.aspx?");
             }
-       
+            
 
         }
         public void Paypal()
@@ -88,110 +77,77 @@ namespace fashionUtilityApplication.Checkout
         }
         public void Purchase()
         {
-            Console.WriteLine( "Bwaintwee");
-            btCont.Visible = true;
-
-            var gateway = _braintreeService.GetGateway();
-            var clientToken = gateway.ClientToken.Generate();
-            clients = clientToken;
-
-            //CreditCardOptionsRequest optionsRequest = new CreditCardOptionsRequest();
-           // optionsRequest.VerifyCard = true;
-
-            //client_Token = gateway.ClientId;
-
-            
-        }
-    
-        [WebMethod]
-        public static void CreatePurchase(string nonceValue, string streetNumberValue, string routeValue, string cityValue, 
-            string stateValue, string postalCodeValue, string countryValue)
-        {
-            Console.WriteLine("Starered");
-            var gateway = _braintreeService.GetGateway();
-
-            var request = new TransactionRequest
+            if (Session["payment_amt"] != null)
             {
-                Amount = Convert.ToDecimal(HttpContext.Current.Session["payment_amt"].ToString()),
-                PaymentMethodNonce = nonceValue,
-                Options = new TransactionOptionsRequest
+                try
                 {
-                    
-                    SubmitForSettlement = true
-                }
-            };
-            Result<Transaction> result = gateway.Transaction.Sale(request);
-            if (result.IsSuccess())
-            {
-                Console.WriteLine("continued");
-
-                var myOrder = new Models.Order();
-                var myAddress = new Models.Address();
-                var manager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                var user = manager.FindByName(HttpContext.Current.User.Identity.Name);
-                myOrder.OrderDate = DateTime.Now;
-                myOrder.Username = user.UserName;
-                myAddress.AddressLine1 = streetNumberValue + " " + routeValue;
-                myAddress.City = cityValue;
-                myAddress.State = stateValue;
-                myAddress.PostalCode = postalCodeValue;
-                myAddress.Country = countryValue;
-                myOrder.Email =user.Email;
-                myOrder.Total = Convert.ToDecimal(HttpContext.Current.Session["payment_amt"].ToString());
-               
-
-                ProductContext _db = new ProductContext();
-
-                // Add order to DB.
-                _db.Orders.Add(myOrder);
-                _db.Addresses.Add(myAddress);
-                _db.SaveChanges();
-
-                using (fashionUtilityApplication.Logic.ShoppingCartActions usersShoppingCart = new fashionUtilityApplication.Logic.ShoppingCartActions())
-                {
-                    List<CartItem> myOrderList = usersShoppingCart.GetCartItems();
-
-                    // Add OrderDetail information to the DB for each product purchased.
-                    for (int i = 0; i < myOrderList.Count; i++)
+                    List<SessionLineItemOptions> cartList = new List<SessionLineItemOptions>();
+                    using (fashionUtilityApplication.Logic.ShoppingCartActions usersShoppingCart = new fashionUtilityApplication.Logic.ShoppingCartActions())
                     {
-                        // Create a new OrderDetail object.
-                        var myOrderDetail = new OrderDetail();
-                        myOrderDetail.OrderId = myOrder.OrderId;
-                        myOrderDetail.Username = HttpContext.Current.User.Identity.Name;
-                        myOrderDetail.ProductId = myOrderList[i].ProductId;
-                        myOrderDetail.Quantity = myOrderList[i].Quantity;
-                        myOrderDetail.ImagePath = myOrderList[i].ImagePath;
-                        myOrderDetail.UnitPrice = myOrderList[i].Product.UnitPrice;
+                        List<CartItem> myOrderList = usersShoppingCart.GetCartItems();
 
-                        // Add OrderDetail to DB.
-                        _db.OrderDetails.Add(myOrderDetail);
-                        _db.SaveChanges();
+                        // Add OrderDetail information to the DB for each product purchased.
+                        for (int i = 0; i < myOrderList.Count; i++)
+                        {
+                            long convertValue = 100;
+                            var item = new SessionLineItemOptions();
+                            item.Name = myOrderList[i].Product.ProductName;
+                            item.Amount = (long)myOrderList[i].Product.UnitPrice * convertValue;
+                            item.Currency = "cad";
+                            item.Quantity = myOrderList[i].Quantity;
+                            item.Description = myOrderList[i].Product.Description;
+                            cartList.Add(item);
+                        }
+
                     }
 
-                    // Set OrderId.
-                    HttpContext.Current.Session["currentOrderId"] = myOrder.OrderId;
+                    string amt = Session["payment_amt"].ToString();
+                    StripeConfiguration.ApiKey = System.Configuration.ConfigurationManager.AppSettings["stripeSecretKeyTest"];
+                    var options = new SessionCreateOptions
+                    {
+                        SuccessUrl = "https://fashionutilityapplication.azurewebsites.net/Checkout/CheckoutComplete.aspx",
+                        CancelUrl = "https://fashionutilityapplication.azurewebsites.net/Checkout/CheckoutCancel.aspx",
 
-                    // Display Order information.
-                    List<fashionUtilityApplication.Models.Order> orderList = new List<fashionUtilityApplication.Models.Order>();
-                    orderList.Add(myOrder);
+                        PaymentMethodTypes = new List<string> {
+                            "card",
+                        },
+                        LineItems = cartList
+
+                    };
                   
+                    var service = new SessionService();
+                    Session session = service.Create(options);
+                    sessionId = session.Id;
+                    Session["token"] = sessionId;
+                    Session["userCheckoutCompleted"] = "true";
                 }
-                HttpContext.Current.Session["userCheckoutCompleted"] = "true";
-                HttpContext.Current.Response.Redirect("Checkout/CheckoutBraintreeComplete.aspx");
+                catch (Exception e)
+                {
+                    Response.Redirect("CheckoutError.aspx?");
+                }
 
             }
             else
             {
-                HttpContext.Current.Response.Redirect("Checkout/CheckoutError.aspx");
-
+                Response.Redirect("CheckoutError.aspx?ErrorCode=AmtMissing");
             }
-            Console.WriteLine("suceeded");
 
 
         }
+    
+        [WebMethod]
+        public static void CreatePurchase(string streetNumberValue, string routeValue, string cityValue, 
+            string stateValue, string postalCodeValue, string countryValue)
+        {
+            HttpContext.Current.Session["streetNumberValue"] = streetNumberValue;
+            HttpContext.Current.Session["routeValue"] = routeValue;
+            HttpContext.Current.Session["cityValue"] = cityValue;
+            HttpContext.Current.Session["stateValue"] = stateValue;
+            HttpContext.Current.Session["postalCodeValue"] = postalCodeValue;
+            HttpContext.Current.Session["countryValue"] = countryValue;
+        }
         protected void CheckoutBtn_Click(object sender, EventArgs e)
         {
-          
            // Response.Redirect("/CheckoutReview.aspx");
         }
     }

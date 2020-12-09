@@ -15,15 +15,6 @@ namespace fashionUtilityApplication.Checkout
     {
 
         /// <summary>
-        /// checkkk control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton checkkk;
-
-        /// <summary>
         /// btCont control.
         /// </summary>
         /// <remarks>

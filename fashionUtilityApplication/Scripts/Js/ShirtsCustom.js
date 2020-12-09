@@ -31,22 +31,22 @@ $(window).click(function (event) {
         }
     });
 
-$("#fileUpload").change(function () {
-    changeImage(this);
-});
 
 function changeImage(input) {
+   // console.log(input);
+
     var reader;
 
     if (input.files && input.files[0]) {
     reader = new FileReader();
 
         reader.onload = function (e) {
-    $("#selectedDesign").attr('src', e.target.result);
-}
+            $("#selectedDesign").attr('src', e.target.result);
+           // console.log(e.target.result);
+        }
 
-reader.readAsDataURL(input.files[0]);
-}
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 $("#heartButton").click(function (e) {
     console.log("heart");
@@ -172,6 +172,19 @@ $("#shortSleevesButton").click(function (e) {
     bg = bg.replace(bg.slice(start, end), shortSleeve);
     console.log(bg);
     $('.centerSection').css("background-image", bg);
+});
 
+$("#backButton").click(function (e) {
+    e.preventDefault();
+});
+$("#frontButton").click(function (e) {
+    e.preventDefault();
+   
+});
+$("#makeDesignButton").click(function (e) {
+    e.preventDefault();
+});
+$("#pickDesignButton").click(function (e) {
+    e.preventDefault();
 
 });

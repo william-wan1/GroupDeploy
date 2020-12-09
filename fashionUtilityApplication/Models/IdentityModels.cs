@@ -36,7 +36,7 @@ namespace fashionUtilityApplication.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("FashionUtility", throwIfV1Schema: false)
         {
         }
 

@@ -4,6 +4,7 @@ using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace fashionUtilityApplication
@@ -14,7 +15,7 @@ namespace fashionUtilityApplication
         private const string AntiXsrfTokenKey = "__AntiXsrfToken";
         private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
         private string _antiXsrfTokenValue;
-      
+
 
 
         protected void Page_Init(object sender, EventArgs e)
@@ -48,7 +49,7 @@ namespace fashionUtilityApplication
 
             Page.PreLoad += master_Page_PreLoad;
         }
-      
+
         protected void master_Page_PreLoad(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -67,7 +68,7 @@ namespace fashionUtilityApplication
                 }
             }
         }
-    
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (HttpContext.Current.User.IsInRole("canEdit"))
@@ -78,13 +79,28 @@ namespace fashionUtilityApplication
         }
         protected void Page_PreRender(object sender, EventArgs e)
         {
-         
+
         }
 
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
             Context.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+        }
+        public delegate void textChanged(object sender, String SelectedValue);
+        public event textChanged OnTextChanged;
+
+        //SelectedIndexChanged event in MasterPage
+        protected void txtCourse_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                OnTextChanged(sender, ((TextBox)sender).Text);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Only works on the productlist page");
+            }
         }
     }
 

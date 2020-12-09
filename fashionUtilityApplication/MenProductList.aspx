@@ -4,7 +4,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
      <div class="dropdown-content">     
            <div class="container" >
-               <a href="#">All</a>
+               <a href="/ProductList.aspx">All</a>
             <asp:ListView ID="categoryList"  
                 ItemType="fashionUtilityApplication.Models.Category" 
                 runat="server"
@@ -13,15 +13,13 @@
                         <a href="/MenProductList.aspx?id=<%#: Item.CategoryID %>">
                         <%#: Item.CategoryName %>
                         </a>
-                </ItemTemplate>
+                 </ItemTemplate>
             </asp:ListView>
                 </div>
         </div>
      <section>
         <div class="container body-content">
-            <hgroup>
-                <h2><%: Page.Title %></h2>
-            </hgroup>
+           
 
             <asp:ListView ID="productList" runat="server" 
                 DataKeyNames="ProductID" GroupItemCount="2"
@@ -29,7 +27,7 @@
                 <EmptyDataTemplate>
                     <table >
                         <tr>
-                            <td>No data was returned.</td>
+                            <td><h3>No data was returned.</h3></td>
                         </tr>
                     </table>
                 </EmptyDataTemplate>
@@ -45,24 +43,30 @@
                     <td runat="server">
                         <table>
                             <tr>
-                                <td>
-                                    <a href="ProductDetails.aspx?productID=<%#:Item.ProductID%>">
+                                <td style="border:solid;width:550px;height:500px;"  >
+                                    <a href="/ProductDetails.aspx?productID=<%#:Item.ProductID%>">
                                         <img src="/Catalog/Images/Thumbs/<%#:Item.ImagePath%>"
-                                            width="350" height="500" style="border: solid" /></a>
+                                            style="width:100%;height:100%;"  /></a>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <a href="ProductDetails.aspx?productID=<%#:Item.ProductID%>">
+                                    <a href="/ProductDetails.aspx?productID=<%#:Item.ProductID%>">
                                         <span>
                                             <%#:Item.ProductName%>
                                         </span>
                                     </a>
                                     <br />
                                     <span>
-                                        <b>Price: </b><%#:String.Format("{0:c}", Item.UnitPrice)%>
+                                        <b><i>Size: </i></b><%#:Item.Size.SizeName%>
                                     </span>
                                     <br />
+                                    <h4>
+                                        <b>Price: </b><%#:String.Format("{0:c}", Item.UnitPrice)%>
+                                    </h4>
+                                    <br />
+                          
+                                   
                                 </td>
                             </tr>
                             <tr>

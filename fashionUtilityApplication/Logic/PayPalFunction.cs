@@ -30,14 +30,12 @@ public class NVPAPICaller
     private const string PWD = "PWD";
     private const string ACCT = "ACCT";
 
-    //Replace <Your API Username> with your API Username
-    //Replace <Your API Password> with your API Password
-    //Replace <Your Signature> with your Signature
-    public string APIUsername = "sb-cojwv1818338_api1.business.example.com";
-    private string APIPassword = "J5Q3S5SS6JWXBALG";
-    private string APISignature = "An5v.y2ld1HsFAP-KP9CE9dpYa37AQXR025J1jjWywCClR48GGFB2dCP";
+    
+    public string APIUsername = System.Configuration.ConfigurationManager.AppSettings["apiUserName"];
+    private string APIPassword = System.Configuration.ConfigurationManager.AppSettings["apiPassword"];
+    private string APISignature = System.Configuration.ConfigurationManager.AppSettings["apiSignature"];
     private string Subject = "";
-    private string BNCode = "PP-ECWizard";
+    private string BNCode = System.Configuration.ConfigurationManager.AppSettings["bnCode"];
 
     //HttpWebRequest Timeout specified in milliseconds 
     private const int Timeout = 15000;
@@ -58,14 +56,14 @@ public class NVPAPICaller
             host = host_SB;
         }
 
-        string returnURL = "https://localhost:44382/Checkout/CheckoutReview.aspx";
-        string cancelURL = "https://localhost:44382/Checkout/CheckoutCancel.aspx";
+        string returnURL = "https://fashionutilityapplication.azurewebsites.net/Checkout/CheckoutReview.aspx";
+        string cancelURL = "https://fashionutilityapplication.azurewebsites.net/Checkout/CheckoutCancel.aspx";
 
         NVPCodec encoder = new NVPCodec();
         encoder["METHOD"] = "SetExpressCheckout";
         encoder["RETURNURL"] = returnURL;
         encoder["CANCELURL"] = cancelURL;
-        encoder["BRANDNAME"] = "Wingtip Toys Sample Application";
+        encoder["BRANDNAME"] = "Fashion Utility";
         encoder["PAYMENTREQUEST_0_AMT"] = amt;
         encoder["PAYMENTREQUEST_0_ITEMAMT"] = amt;
         encoder["PAYMENTREQUEST_0_PAYMENTACTION"] = "Sale";
@@ -195,9 +193,11 @@ public class NVPAPICaller
                 myWriter.Write(strPost);
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
             // No logging for this tutorial.
+            fashionUtilityApplication.Logic.ExceptionUtility.LogException(e, "HttpCall in PayPalFunction.cs");
+
         }
 
         //Retrieve the Response returned from the NVP API call to PayPal.

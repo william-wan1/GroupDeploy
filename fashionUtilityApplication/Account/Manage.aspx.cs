@@ -167,7 +167,7 @@ namespace fashionUtilityApplication.Account
             else
             {
                 return _db.Addresses.Where(
-                ad => ad.UserName == user.UserName).ToList();
+                ad => ad.UserName == user.Email).ToList();
             }
         }
         public void AddAddressFunction(Object sender, EventArgs e)
@@ -188,7 +188,28 @@ namespace fashionUtilityApplication.Account
               //  return account;
             }
         }
-        
+
+        public List<Order> GetOrderInformation()
+        {
+            var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var signInManager = Context.GetOwinContext().Get<ApplicationSignInManager>();
+            var user = manager.FindById(User.Identity.GetUserId());
+
+            if (user == null)
+            {
+                Response.Redirect("/Account/Login");
+                var order = new Order();
+                List<Order> emptyList = new List<Order>();
+                emptyList.Add(order);
+                return emptyList.ToList();
+            }
+            else
+            {
+                return _db.Orders.Where(
+                o => o.Email == user.Email).ToList();
+            }
+        }
+
 
         public void UpdateAccountInformation(object sender, EventArgs e)
         {

@@ -9,20 +9,11 @@ namespace fashionUtilityApplication.Models
         [ScaffoldColumn(false)]
         public int ProductID { get; set; }
 
-        [Required, StringLength(80), Display(Name = "Name")]
+        [Required, StringLength(60), Display(Name = "Name")]
         public string ProductName { get; set; }
 
-        [Required, StringLength(360), Display(Name = "Product Description"), DataType(DataType.MultilineText)]
+        [Required, StringLength(260), Display(Name = "Product Description"), DataType(DataType.MultilineText)]
         public string Description { get; set; }
-
-        [StringLength(100), Display(Name = "Company")]
-        public string Company { get; set; }
-
-        [StringLength(256), Display(Name = "Product Size")]
-        public string Size { get; set; }
-
-        [StringLength(160), Display(Name = "Product Color")]
-        public string Color { get; set; }
 
         [Required]
         public string ImagePath { get; set; }
@@ -37,5 +28,14 @@ namespace fashionUtilityApplication.Models
         public int? GenderID { get; set; }
 
         public virtual Gender Gender { get; set; }
+        public int? SizeID { get; set; }
+
+        public virtual Size Size { get; set; }
+        public int? ColorID { get; set; }
+
+        public virtual Color Color { get; set; }
+        public int? CompanyID { get; set; }
+
+        public virtual Company Company { get; set; }
     }
 }

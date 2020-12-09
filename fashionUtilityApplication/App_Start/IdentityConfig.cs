@@ -28,33 +28,34 @@ namespace fashionUtilityApplication
         private Task configSendGridasync(IdentityMessage message)
         {
             MailMessage msg = new MailMessage();
-
-            msg.From = new MailAddress("ezeakudoluchinemerem@gmail.com", "Fashion Utility (Admin)");
+            msg.From = new MailAddress(ConfigurationManager.AppSettings["emailServiceUserName"], "Fashion Utility (Admin)");
             msg.To.Add(new MailAddress(message.Destination));
             msg.Subject = message.Subject;
             msg.Body = message.Body;
 
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
-            smtpClient.UseDefaultCredentials = true;
+            // SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
+            //   smtpClient.UseDefaultCredentials = true;
 
-            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential( ConfigurationManager.AppSettings["emailServiceUserName"], ConfigurationManager.AppSettings["emailServicePassword"]);
+            //  System.Net.NetworkCredential credentials = new System.Net.NetworkCredential( ConfigurationManager.AppSettings["smtpMail"], ConfigurationManager.AppSettings["smtpPassword"]);
+            //  smtpClient.Credentials = credentials;
+            //  smtpClient.EnableSsl = true;
+            //      smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //  smtpClient.Send(msg);
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("joe@contoso.com", "XXXXXX");
             smtpClient.Credentials = credentials;
             smtpClient.EnableSsl = true;
-
-
-            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtpClient.Send(msg);
 
-           
 
-           
 
             // Create a Web transport for sending email.
-           // var transportWeb = new Web(credentials);
+            // var transportWeb = new Web(credentials);
 
             // Send the email.
-            
-                return Task.FromResult(0);
+
+            return Task.FromResult(0);
             
         }
 

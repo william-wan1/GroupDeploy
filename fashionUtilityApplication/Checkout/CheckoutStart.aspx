@@ -67,7 +67,7 @@
          https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
     -->
     
-    <div class="container">
+    <div class="container authorization">
         <fieldset class="form-horizontal">
             <legend>Shipping Address</legend>
             <div class="form-group ">
@@ -191,24 +191,24 @@ function geolocate() {
     </script>
    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATZzVpjqK7eHF0MrW20fNhXEstJ1Jzer0&libraries=places&callback=initAutocomplete"
         async defer></script>
-    <asp:ImageButton ID="checkkk" runat="server" 
+   <!-- <asp:ImageButton ID="checkkk"  
+        ImageUrl="~/Pictures/socials/checkout_button.jpg" 
                       Width="145" AlternateText="Check out!!!" 
                       OnClick="CheckoutBtn_Click" 
-                       BorderWidth="0" />    
+                       BorderWidth="0" />  -->
+        <button id="checkkk" class="sendRequestButton">Complete payment</button>
         
         <br />
-       <input id="nonce" name="nonce" type="hidden" />
     <fieldset id="btCont" runat="server" visible="false">
         <legend>Payment Information</legend>
 
         <div class="bt-drop-in-wrapper">
             <div ID="bt-dropin"></div>
                     <button id="payment-button">Complete payment</button>
-
         </div>
     </fieldset>
         
-    <script src="https://js.braintreegateway.com/web/dropin/1.22.0/js/dropin.min.js"></script>
+    <%--<script src="https://js.braintreegateway.com/web/dropin/1.22.0/js/dropin.min.js"></script>
 
     <script type="text/javascript">
         function callservermethod() {
@@ -271,18 +271,67 @@ function geolocate() {
 
                 });
              }
-        )
+       )
 
-    </script>
-    <%--<script src="https://checkout.stripe.com/checkout.js"
-            class="stripe-button"
-            data-key="pk_live_51H28PVFQksPvZrqngSCs9iTLGpCkcrXPKSBDUBkh0Us5BEBGqTpf2mtHNYvPBbuyJv8y1uHAl89abGzgDy4o5Te600UCccusDs"
-            data-name="Fashion Utility Payment"
-            data-locale="en"
-            data-label="Confirm Payment"
-            runat="server"
-
-            ></script>--%>
+    </script>--%>
+    <script src="https://js.stripe.com/v3/"></script>
+     <script>
+         $("#autocomplete").keyup(function () {
+             var route = $('#autocomplete').val();
+             var button = document.getElementById('checkkk');
+             if (route == "") {
+                 button.style.visibility = "hidden";
+             } 
+         });
+         $("#autocomplete").change(function () {
+             var route = $('#autocomplete').val();
+             var button = document.getElementById('checkkk');
+             if (route == "") {
+                 button.style.visibility = "hidden";
+             } else {
+                 button.style.visibility = "visible";
+             }
+         });
+         document.addEventListener("DOMContentLoaded", function (event) {
+             var route = $('#route').val();
+             var button = document.getElementById('checkkk');
+             if (route == "") {
+                 button.style.visibility = "hidden";
+             } else {
+                 button.style.visibility = "visible";
+             }
+         });
+         var stripe = Stripe('pk_test_51H28PVFQksPvZrqnyQv7j7v2yA1t41lXMk5BiRwl6M46XJKQ5HrhJrb17GwkOminvzkkLXdGll1qoxS4JzEYnCCc00eIfHoqZ2');
+         var button = document.getElementById('checkkk');
+         button.addEventListener('click', function (e) {
+             e.preventDefault();
+             stripe.redirectToCheckout({
+                 sessionId: "<%= sessionId %>",
+             })
+                var streetNumberValue = $('#street_number').val();
+                var routeValue = $('#route').val();
+                var cityValue = $('#locality').val();
+                var stateValue = $('#administrative_area_level_1').val();
+                var postalCodeValue = $('#postal_code').val();
+                var countryValue = $('#country').val();
+                var obj = { "streetNumberValue": streetNumberValue, "routeValue": routeValue, "cityValue": cityValue, "stateValue": stateValue, "postalCodeValue": postalCodeValue, "countryValue": countryValue };
+                $(document).ready(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Checkout/CheckoutStart.aspx/CreatePurchase",
+                        data: JSON.stringify(obj),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("Request: " + XMLHttpRequest.toString() + "\n\nStatus: " + textStatus + "\n\nError: " + errorThrown);
+                            window.location.href = "/Checkout/CheckoutError.aspx";
+                        }
+                    });
+                });
+            })
+     </script>
 
        </div>
 </asp:Content>

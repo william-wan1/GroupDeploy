@@ -15,103 +15,58 @@ namespace fashionUtilityApplication
     {
 
         /// <summary>
-        /// music control.
+        /// sortList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAudio music;
+        protected global::System.Web.UI.WebControls.DropDownList sortList;
 
         /// <summary>
-        /// tees control.
+        /// ListView1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox tees;
+        protected global::System.Web.UI.WebControls.ListView ListView1;
 
         /// <summary>
-        /// bottoms control.
+        /// categoryListView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox bottoms;
+        protected global::System.Web.UI.WebControls.ListView categoryListView;
 
         /// <summary>
-        /// shirts control.
+        /// sizeListView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox shirts;
+        protected global::System.Web.UI.WebControls.ListView sizeListView;
 
         /// <summary>
-        /// skirts control.
+        /// brandListView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox skirts;
+        protected global::System.Web.UI.WebControls.ListView brandListView;
 
         /// <summary>
-        /// tshirts control.
+        /// colorListView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox tshirts;
-
-        /// <summary>
-        /// accessories control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox accessories;
-
-        /// <summary>
-        /// coats control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox coats;
-
-        /// <summary>
-        /// hoodies control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox hoodies;
-
-        /// <summary>
-        /// dresses control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox dresses;
-
-        /// <summary>
-        /// jeans control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox jeans;
+        protected global::System.Web.UI.WebControls.ListView colorListView;
 
         /// <summary>
         /// productList control.
@@ -121,5 +76,19 @@ namespace fashionUtilityApplication
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListView productList;
+
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new fashionUtilityApplication.SiteMaster Master
+        {
+            get
+            {
+                return ((fashionUtilityApplication.SiteMaster)(base.Master));
+            }
+        }
     }
 }

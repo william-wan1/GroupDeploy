@@ -1,119 +1,136 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ProductList.aspx.cs" Inherits="fashionUtilityApplication.ProductList" %>
+﻿<%@ Page EnableEventValidation="false" Title=""  Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ProductList.aspx.cs" Inherits="fashionUtilityApplication.ProductList" %>
+<%@ MasterType VirtualPath="~/Site.Master" %>
 
 
+<asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
 
-<asp:Content ID="Content1" ContentPlaceHolderID="headContent" runat="server">
-</asp:Content> 
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-     <section>
-         <br />
-          <br /> <br />
-          <br />
-  <!-- <audio id="music" runat="server" controls  loop >
-      <source src="Media/Music/327.mp3"  type="audio/ogg">
-      <source src="Media/Music/327.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-    </audio>
-    -->
-         <embed src="Media/Music/327.mp3" width="180"  height="90" loop="true" autostart="true" hidden="true" />
+ 
+       
+                  <script type="text/javascript">
+                      $(document).ready(function () {
+                          Page_BlockSubmit = false;
 
-            <div id="filterDiv">
-                <div class="filterItem">
-                    <button id="sortByButton">Sort By</button>
-                    <div style="display:none;" id="sortByDiv" class="filterItem-content">
-                        <input type="radio" id="featured" name="sortBy" value="featured ">
-                        <label for="featured">Featured</label><br>
-                        <input type="radio" id="new" name="sortBy" value="new">
-                        <label for="new">New in Store</label><br>
-                        <input type="radio" id="highToLow" name="sortBy" value="highToLow"> 
-                        <label for="highToLow">Price High To Low</label><br />
-                        <input type="radio" id="lowToHigh" name="sortBy" value="lowToHigh">
-                        <label for="lowToHigh">Price Low To High</label>
-                    </div>
-                    </div>
+                          $("#sortByButton").click(function (e) {
+                              e.preventDefault();
+                              $("#sortByDiv").slideToggle("slow");
+                          });
+                          $("#genderButton").click(function (e) {
+                              e.preventDefault();
+                              $("#genderDiv").slideToggle("slow");
+                          });
+                          $("#categoryButton").click(function (e) {
+                              e.preventDefault();
+                              $("#categoryDiv").slideToggle("slow");
+                          });
+                          $("#sizeButton").click(function (e) {
+                              e.preventDefault();
+                              $("#sizeDiv").slideToggle("slow");
+                          });
+                          $("#brandButton").click(function (e) {
+                              e.preventDefault();
+                              $("#brandDiv").slideToggle("slow");
+                          });
+                          $("#colorButton").click(function (e) {
+                              e.preventDefault();
+                              $("#colorDiv").slideToggle("slow");
+                          });
+                      });
+        </script>
+        
+        <div id="filterDiv">
+            <div class="filterItem">
+                   <asp:DropDownList  style="border:1px solid black;width:100%;" runat="server" id="sortList" AutoPostBack="true" EnableViewState="true" OnSelectedIndexChanged="sortList_SelectedIndexChanged">
+                        <asp:ListItem>Order By</asp:ListItem>
+                        <asp:ListItem Value="phtl">Price High To Low</asp:ListItem>
+                        <asp:ListItem Value="plth">Price Low To High</asp:ListItem>
+                    </asp:DropDownList>  
+                
+            </div>
                 <div class="filterItem">
                     <button id="genderButton">Gender</button>
-                    <div style="display:none;" id="genderDiv" class="filterItem-content">
-                        <input type="radio" id="male" name="gender" value="male">
-                        <label for="male">Male</label><br>
-                        <input type="radio" id="female" name="gender" value="female">
-                        <label for="female">Female</label><br>
-                        <input type="radio" id="unisex" name="gender" value="unisex">
-                        <label for="unisex">Unisex</label>
-                    </div>
+                   <div style="display:none;" id="genderDiv" class="filterItem-content">
+                        <asp:ListView ID="ListView1" SelectionMode="Multiple" 
+                        ItemType="fashionUtilityApplication.Models.Gender" 
+                        
+                             AutoPostBack="true"
+                        runat="server"
+                        SelectMethod="GetGenders">  
+                         <ItemTemplate>
+                             <asp:CheckBox runat="server" ID="genderList" Text=<%#: Item.GenderName %>  AutoPostBack="true" OnCheckedChanged="categoryList_CheckedChanged" Checked="false"  /><br />
+                        </ItemTemplate>
+                    </asp:ListView> 
+                     </div>
                  </div>
 
                 <div class="filterItem">
                     <button id="categoryButton">Category</button>
                     <div style="display:none;" id="categoryDiv" class="filterItem-content">
-                        <input type="checkbox" id="tees" name="category" value="tees" runat="server" onClick="" AutoPostBack="true">
-                        <label for="tees">Tees</label><br>
-
-                        <input type="checkbox" id="bottoms" name="category" value="bottoms"  runat="server">
-                        <label for="bottoms">Bottoms</label><br>
-
-                        <input type="checkbox" id="shirts" name="category" value="shirts"  runat="server">
-                        <label for="shirts">Shirts</label><br>
-
-                        <input type="checkbox" id="skirts" name="category" value="skirts"  runat="server">
-                        <label for="skirts">Skirts</label><br>
-
-                        <input type="checkbox" id="tshirts" name="category" value="tshirts"  runat="server">
-                        <label for="tshirts">T-Shirts</label><br>
-
-                        <input type="checkbox" id="accessories" name="category" value="accessories" runat="server">
-                        <label for="accessories">Accessories</label><br>
-
-                        <input type="checkbox" id="coats" name="category" value="coats" runat="server">
-                        <label for="coats">Coats</label><br>
-
-                        <input type="checkbox" id="hoodies" name="category" value="hoodies" runat="server">
-                        <label for="hoodies">Hoodies</label><br>
-
-                        <input type="checkbox" id="dresses" name="category" value="dresses" runat="server">
-                        <label for="dresses">Dresses</label><br>
-
-                        <input type="checkbox" id="jeans" name="category" value="jeans" runat="server">
-                        <label for="jeans">Jeans</label><br>
+                        <asp:ListView ID="categoryListView" SelectionMode="Multiple" 
+                        ItemType="fashionUtilityApplication.Models.Category" 
+                        
+                             AutoPostBack="true"
+                        runat="server"
+                        SelectMethod="GetCategories">  
+                         <ItemTemplate>
+                             <asp:CheckBox runat="server" ID="categoryList" Text=<%#: Item.CategoryName %>  AutoPostBack="true" OnCheckedChanged="categoryList_CheckedChanged" Checked="false"  /><br />
+                        </ItemTemplate>
+                    </asp:ListView> 
                      </div>
                   </div>
 
                <div class="filterItem"> 
                      <button id="sizeButton">Size</button>
+                      <div style="display:none;" id="sizeDiv" class="filterItem-content">
+                            <asp:ListView ID="sizeListView" SelectionMode="Multiple" 
+                                ItemType="fashionUtilityApplication.Models.Size" 
+                                runat="server" 
+                                SelectMethod="GetSizes">  
+                             <ItemTemplate>
+                                <asp:CheckBox runat="server" ID="sizeList" Text="<%#: Item.SizeName %>" AutoPostBack="true" OnCheckedChanged="categoryList_CheckedChanged" Checked="false" /><br />
+                            </ItemTemplate>
+                        </asp:ListView> 
+                       </div>
                 </div>
 
                 <div class="filterItem">
                   <button id="brandButton">Brand</button>
+                    <div style="display:none;" id="brandDiv" class="filterItem-content">
+                        <asp:ListView ID="brandListView" SelectionMode="Multiple" 
+                        ItemType="fashionUtilityApplication.Models.Company" 
+                        runat="server"
+                        SelectMethod="GetCompanies">  
+                         <ItemTemplate>
+                            <asp:CheckBox runat="server" ID="brandList" Text="<%#: Item.CompanyName %>" AutoPostBack="true" OnCheckedChanged="categoryList_CheckedChanged" Checked="false" /><br />
+                        </ItemTemplate>
+                    </asp:ListView> 
+                     </div>
                 </div>
 
                 <div class="filterItem">
                   <button id="colorButton">Color</button>
+                    <div style="display:none;" id="colorDiv" class="filterItem-content">
+                        <asp:ListView ID="colorListView" SelectionMode="Multiple" 
+                        ItemType="fashionUtilityApplication.Models.Color" 
+                        runat="server"
+                        SelectMethod="GetColors">  
+                         <ItemTemplate>
+                            <asp:CheckBox runat="server" ID="colorList" Text="<%#: Item.ColorName %>" AutoPostBack="true" OnCheckedChanged="categoryList_CheckedChanged" Checked="false" /><br />
+                        </ItemTemplate>
+                    </asp:ListView> 
+                     </div>
                 </div>
         </div>
-               <script type="text/javascript">
-     $(document).ready(function () {
-         $("#sortByButton").click(function (e) {
-             e.preventDefault();
-             $("#sortByDiv").slideToggle("slow");
-         });
-         $("#genderButton").click(function (e) {
-             e.preventDefault();
-             $("#genderDiv").slideToggle("slow");
-         });
-         $("#categoryButton").click(function (e) {
-             e.preventDefault();
-             $("#categoryDiv").slideToggle("slow");
-         });
-     });
-</script>
+   <!-- "-->
+     
             <div class="container body-content">
             <asp:ListView ID="productList" runat="server" 
                 DataKeyNames="ProductID" GroupItemCount="2" 
-                ItemType="fashionUtilityApplication.Models.Product" SelectMethod="GetProducts">
+                
+                ItemType="fashionUtilityApplication.Models.Product">
                 <EmptyDataTemplate>
                     <table >
                         <tr>
-                            <td>No data was returned.</td>
+                            <td><h3>No data was returned.</h3></td>
                         </tr>
                     </table>
                 </EmptyDataTemplate>
@@ -129,10 +146,10 @@
                     <td runat="server">
                         <table>
                             <tr>
-                                <td style="border: solid"  >
+                                <td style="border:solid;width:550px;height:500px;"  >
                                     <a href="/ProductDetails.aspx?productID=<%#:Item.ProductID%>">
                                         <img src="/Catalog/Images/Thumbs/<%#:Item.ImagePath%>"
-                                            style="width:100%" /></a>
+                                            style="width:100%;height:100%;"  /></a>
                                 </td>
                             </tr>
                             <tr>
@@ -144,10 +161,12 @@
                                     </a>
                                     <br />
                                     <span>
-                                        <b>Price: </b><%#:String.Format("{0:c}", Item.UnitPrice)%>
+                                        <b><i>Size: </i></b><%#:Item.Size.SizeName%>
                                     </span>
                                     <br />
-                          
+                                    <h4>
+                                        <b>Price: </b><%#:String.Format("{0:c}", Item.UnitPrice)%>
+                                    </h4>
                                    
                                 </td>
                             </tr>
@@ -177,5 +196,4 @@
                 </LayoutTemplate>
             </asp:ListView>
         </div>
-    </section>
 </asp:Content>

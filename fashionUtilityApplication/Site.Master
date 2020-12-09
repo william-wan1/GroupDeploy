@@ -22,57 +22,7 @@
 
 </head>
 <body>
-        <nav class="navbar navbar-toggleable-sm navbar-fixed-top navbar-expand-md navbar-toggleable-msm navbar-inverse border-bottom box-shadow" id ="topLayer">
-            <div class="container">
-                <i class="glyphicon glyphicon-menu-hamburger" onclick="openNav()" style="cursor:pointer;" id="hamburger" ></i>
-                <a class="navbar-brand" style="color:red;" href="ProductList.aspx">Fashion Utility</a>
-
-                <div id="mySidenav" class="sidenav">
-                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                    <a href="#">WOMEN</a>
-                    <a href="#">MEN</a>
-                    <a href="#">UNISEX</a>
-                </div>
-
-
-                <div class="topnav" id="myTopnav">
-                    <a runat="server" id="adminLink" visible="false" 
-      href="~/Admin/AdminPage">Admin</a>
-                  
-                    
-                  <a href="/Default.aspx" style="color:red;" runat="server"> Men</a>
-                    <a href="/Women.aspx"  style="color:red;"  runat="server">Women</a>
-                    <a href="/Customs/FuCustomize.aspx" style="color:red;" runat="server">FU CUSTOMIZE</a>
-                    
-                </div>
-
-                <div class="iconNavDiv">
-                    
-                     <a class="nav-link" style="color:red;" id="search-icon" asp-page="/Index"><span class="glyphicon glyphicon-search"></span></a> 
        
-                  
-                    <a class=" nav-text"  style="color:red; float:right;" "asp-area="" asp-page="/Privacy"><span class="glyphicon glyphicon-heart"></span></a>
-                    <a class=" nav-text" style="color:red; float:right;" id="cartCount" href="ShoppingCart.aspx"  name="cartCount" runat="server"><span class="glyphicon glyphicon-shopping-cart" ></span></a>
-
-                    
-                    <div class="loginDropdown" style="color:red; float:right;">
-                        <a class="loginDropbtn nav-link" style="color:red; float:right;"><span class="glyphicon glyphicon-user"></span></a>
-                        <div class="loginDropdown-content">
-                        <a href="/Account/Login.aspx">Login</a>
-                        <a href="/Account/Register.aspx">Sign Up</a>
-                        <a href="/Account/Manage.aspx">My Account</a>
-                        </div>
-                    </div>
-                    <form class="has-feedback" style="float:right; background-color:blue;">
-                        <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="false"></span>
-                        <input type="text" class="form-control" id="searchQuery" placeholder="Tees" >
-                    </form>
-                </div>
-
-            </div>
-          
-            
-        </nav>
            <div id="" class="">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <a href="#">About</a>
@@ -82,8 +32,8 @@
             </div>
         
   
-    <form runat="server">
-        <asp:ScriptManager runat="server" EnablePageMethods="true">
+    <form runat="server" >
+        <asp:ScriptManager runat="server" EnablePageMethods="true" >
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
                 <%--Framework Scripts--%>
@@ -102,42 +52,53 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
+             <nav class="navbar navbar-toggleable-sm navbar-fixed-top navbar-expand-md navbar-toggleable-msm navbar-inverse border-bottom box-shadow" id ="topLayer">
+                <div class="container">
+                    <i class="glyphicon glyphicon-menu-hamburger" onclick="openNav()" style="cursor:pointer;" id="hamburger" ></i>
+                    <a class="navbar-brand" style="color:red;" href="/ProductList.aspx">Fashion Utility</a>
+                    <div id="mySidenav" class="sidenav">
+                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                        <a href="/Women.aspx">WOMEN</a>
+                        <a href="/Default.aspx">MEN</a>
+                        <a href="/ProductList.aspx">UNISEX</a>
+                    </div>
 
-        <div class="navbar navbar-inverse ">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" runat="server" href="~/">Application name</a>
+                    <div class="topnav" id="myTopnav">
+                        <a runat="server" id="adminLink" visible="false" href="~/Admin/AdminPage">Admin</a>
+                        <a href="/Default.aspx" style="color:red;" runat="server"> Men</a>
+                        <a href="/Women.aspx"  style="color:red;"  runat="server">Women</a>
+                        <a href="/Customs/FuCustomize.aspx" style="color:red;" runat="server">FU CUSTOMIZE</a>
+                    </div>
+                     
+                    <div class="iconNavDiv">
+                        <div>
+                            <!--<span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="false" ></span> -->
+                            <asp:TextBox runat="server" AutoPostBack="true" id="searchQuery"  CssClass="searchTextBox" OnTextChanged="txtCourse_TextChanged"  />
+                        </div>
+                        <a class=" nav-text" style="color:red; float:right;" id="cartCount" href="ShoppingCart.aspx"  name="cartCount" runat="server"><span class="glyphicon glyphicon-shopping-cart" ></span></a>
+                        <div class="loginDropdown" style="color:red; float:right;">
+                            <a class="loginDropbtn nav-link" style="color:red; float:right;"><span class="glyphicon glyphicon-user"></span></a>
+                            <div class="loginDropdown-content">
+                                <asp:LoginView runat="server" ViewStateMode="Disabled">
+                                    <AnonymousTemplate>
+                                        <a runat="server" href="~/Account/Register">Register</a>
+                                        <a runat="server" href="~/Account/Login">Log in</a>
+                                    </AnonymousTemplate>
+                                    <LoggedInTemplate>
+                                        <a runat="server" href="~/Account/Manage" title="Manage your account">My account</a>
+                                        <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log out" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                                    </LoggedInTemplate>
+                                </asp:LoginView>                          
+                            </div>
+                        </div>
+                       
+                    </div>
+
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">About</a></li>
-                        <li><a runat="server" href="~/Contact">Contact</a></li>
-                    </ul>
-                    <asp:LoginView runat="server" ViewStateMode="Disabled">
-                        <AnonymousTemplate>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a runat="server" href="~/Account/Register">Register</a></li>
-                                <li><a runat="server" href="~/Account/Login">Log in</a></li>
-                            </ul>
-                        </AnonymousTemplate>
-                        <LoggedInTemplate>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName()  %> !</a></li>
-                                <li>
-                                    <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
-                                </li>
-                            </ul>
-                        </LoggedInTemplate>
-                    </asp:LoginView>
-                </div>
-            </div>
-        </div>
+          
+            
+            </nav>
+ 
 
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
@@ -148,7 +109,9 @@
                 <div>
 
                 </div>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+                <h5>&copy; <%: DateTime.Now.Year %> -Fashion Utility</h5>
+                <h5>Capstone Project</h5>
+                <h5>Ezeakudolu Chinemerem David 000778050</h5>
             </footer>
         </div>
 
