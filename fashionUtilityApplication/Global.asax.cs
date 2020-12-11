@@ -30,7 +30,10 @@ namespace fashionUtilityApplication
             // Add Routes.
             RegisterCustomRoutes(RouteTable.Routes);
         }
-
+        protected void Application_BeginRequest()
+        {
+            Response.AddHeader("X-Frame-Options", "SAMEORIGIN");
+        }
 
         void Application_Error(object sender, EventArgs e)
         {

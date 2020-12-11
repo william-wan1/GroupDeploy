@@ -17,8 +17,10 @@
                                 <asp:Literal runat="server" ID="FailureText" />
                             </p>
                         </asp:PlaceHolder>
-                        
 
+
+
+                        
                         <div class="form-group">
                             <asp:Label runat="server" AssociatedControlID="Email" CssClass="col-md-2 control-label">Email</asp:Label>
                             <div class="col-md-10">

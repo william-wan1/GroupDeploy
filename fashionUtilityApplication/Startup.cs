@@ -10,6 +10,7 @@ namespace fashionUtilityApplication
             ConfigureAuth(app);
             System.Console.WriteLine(System.Configuration.ConfigurationManager.AppSettings["emailServiceUserName"]);
             StripeConfiguration.ApiKey = System.Configuration.ConfigurationManager.AppSettings["stripeSecretKey"];
+            
         }
     }
 }
